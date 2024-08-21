@@ -1,0 +1,27 @@
+{
+  "name": "split_bill",
+  "version": "1.0.0",
+  "description": "API Split Bill",
+  "main": "index.js",
+  "scripts": {
+    "backend": "npm run dev -w backend",
+    "frontend": "npm run dev -w frontend",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "backend/**/*.{js,mjs,cjs,ts}": "eslint --config backend/eslint.config.mjs --fix",
+    "frontend/**/*.{ts,tsx}": "eslint --config frontend/eslint.config.js --fix"
+  },
+  "author": "Chandra",
+  "license": "ISC",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.9"
+  }
+}
