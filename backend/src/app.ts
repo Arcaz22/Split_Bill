@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import router from "./routes";
+import swaggerDocs from './utils/config-swagger';
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.use(helmet());
 app.use(express.json());
 
 app.use(router);
+swaggerDocs(app);
 
 export default app;

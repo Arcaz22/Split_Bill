@@ -11,7 +11,7 @@ export const checkUsernameExists = async (username: string) => {
         .execute();
 
     if (existingUser.length > 0) {
-        throw new BaseError(StatusCodes.BAD_REQUEST, "Username already exists");
+        throw new BaseError(StatusCodes.CONFLICT, "Username already exists");
     }
 };
 
@@ -22,6 +22,6 @@ export const checkEmailExists = async (email: string) => {
         .execute();
 
     if (existingUser.length > 0) {
-        throw new BaseError(StatusCodes.BAD_REQUEST, "Email already exists");
+        throw new BaseError(StatusCodes.CONFLICT, "Email already exists");
     }
 };

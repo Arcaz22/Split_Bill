@@ -2,6 +2,7 @@
   "name": "split_bill",
   "version": "1.0.0",
   "description": "API Split Bill",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "backend": "npm run dev -w backend",

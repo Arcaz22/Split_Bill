@@ -1,7 +1,18 @@
 import { db } from "../../database/connections";
-import { users, roles } from "../../database/schema";
-import { eq, like, or } from "drizzle-orm";
-import { PaginationInterface, calculatePagination } from "../../utils/interface/pagination-interface";
+import {
+    users,
+    roles
+} from "../../database/schema";
+import {
+    desc,
+    eq,
+    like,
+    or
+} from "drizzle-orm";
+import {
+    PaginationInterface,
+    calculatePagination
+} from "../../utils/interface/pagination-interface";
 import { SearchInterface } from "../../utils/interface/search-interface";
 
 export const findUser = async (search: SearchInterface, pagination: PaginationInterface) => {
@@ -29,6 +40,7 @@ export const findUser = async (search: SearchInterface, pagination: PaginationIn
     .from(users)
     .leftJoin(roles, eq(users.roleId, roles.id))
     .where(searchCondition)
+    .orderBy(desc(users.createdAt))
     .limit(limit)
     .offset(offset)
     .execute();
@@ -45,8 +57,6 @@ export const findUser = async (search: SearchInterface, pagination: PaginationIn
         email: result.email,
         phone: result.phone,
         avatar: result.avatar,
-        createdAt: result.createdAt,
-        updatedAt: result.updatedAt,
         role: {
             id: result.roleId,
             name: result.roleName
