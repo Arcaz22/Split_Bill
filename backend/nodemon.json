@@ -1,4 +1,4 @@
 {
-    "exec": "ts-node --files server.ts",
+    "exec": "ts-node --files src/server.ts",
     "ext": ".ts,.js"
 }
