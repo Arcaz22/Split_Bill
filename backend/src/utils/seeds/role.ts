@@ -11,5 +11,4 @@ export default async function RoleSeed() {
         { id: userRoleId, name: 'user' },
     ]);
 
-    console.log("Roles seeded successfully!");
 }

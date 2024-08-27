@@ -1,5 +1,10 @@
 import path from 'path';
-import { Application, Request, Response, NextFunction } from 'express';
+import {
+    Application,
+    Request,
+    Response,
+    NextFunction
+} from 'express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { env } from './env';

@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
+import {
+    Request,
+    Response
+} from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { BaseError } from '../utils/responses/base-error';
 import { Preview } from '../service/file/preview';
 import { Download } from '../service/file/download';
-import { BaseError } from '../utils/responses/base-error';
-import { StatusCodes } from 'http-status-codes';
 
 export const PreviewController = async (req: Request, res: Response) => {
     const { fieldName, fileName } = req.query;

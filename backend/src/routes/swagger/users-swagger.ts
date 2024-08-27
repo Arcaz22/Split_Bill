@@ -3,6 +3,8 @@
  *
  * /user/:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
  *     parameters:

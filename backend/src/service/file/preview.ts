@@ -1,9 +1,12 @@
 import fs from 'fs';
 import mime from 'mime-types';
-import { FileInterfaceDTO } from '../../utils/interface/preview-interface';
-import { getDirectoryPath, validateFileExists } from '../../utils/validations/file-check';
+import { FileInterface } from '../../utils/interface/preview-interface';
+import {
+    getDirectoryPath,
+    validateFileExists
+} from '../../utils/validations/file-check';
 
-export const Preview = async (fieldName: string, filename: string): Promise<FileInterfaceDTO> => {
+export const Preview = async (fieldName: string, filename: string): Promise<FileInterface> => {
     const directoryPath = getDirectoryPath(fieldName);
     const filePath = validateFileExists(directoryPath, filename);
 

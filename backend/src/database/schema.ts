@@ -1,5 +1,9 @@
 import { createInsertSchema } from "drizzle-zod";
-import { mysqlTable, timestamp, varchar } from "drizzle-orm/mysql-core";
+import {
+    mysqlTable,
+    timestamp,
+    varchar
+} from "drizzle-orm/mysql-core";
 import { z } from "zod";
 
 export const users = mysqlTable("users", {
@@ -23,8 +27,9 @@ export const insertUsersSchema = z.object({
     username: z.string().min(1),
     email: z.string().email(),
     password: z.string().min(6),
+    confirmPassword: z.string().min(6),
     phone: z.string(),
-    avatar: z.string().optional(),
+    avatar: z.string().nullable().optional(),
     roleName: z.string().default("user"),
   });
 export const insertRolesSchema = createInsertSchema(roles);

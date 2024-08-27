@@ -1,11 +1,13 @@
-import { Request, Response } from "express";
-import { findUser } from "../service/user/find-user";
-import { DataTableResponses } from "../utils/responses/datatable-responses";
+import {
+    Request,
+    Response
+} from "express";
 import { StatusCodes } from "http-status-codes";
+import { DataTableResponses } from "../utils/responses/datatable-responses";
+import { findUser } from "../service/user/find-user";
 
 export const FindUserController = async (req: Request, res: Response) => {
     try {
-        // Ambil parameter pencarian dan pagination dari query string
         const searchParams = {
             search: req.query.search as string,
         };
@@ -15,10 +17,8 @@ export const FindUserController = async (req: Request, res: Response) => {
             length: req.query.length ? parseInt(req.query.length as string, 10) : undefined,
         };
 
-        // Panggil service untuk mendapatkan data pengguna
         const { results, total } = await findUser(searchParams, paginationParams);
 
-        // Buat respons menggunakan DataTableResponses
         const response = new DataTableResponses(results, total);
 
         res.status(StatusCodes.OK).json(response);

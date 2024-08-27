@@ -12,4 +12,6 @@ function getEnvVariable(name: string): string {
 
 export const env = {
     BASE_URL: getEnvVariable('BASE_URL'),
+    JWT_SECRET: getEnvVariable('JWT_SECRET'),
+    JWT_EXPIRATION: getEnvVariable('JWT_EXPIRATION'),
 };

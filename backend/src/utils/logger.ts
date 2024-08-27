@@ -1,6 +1,15 @@
-import { createLogger, format, transports } from 'winston';
+import {
+    createLogger,
+    format,
+    transports
+} from 'winston';
 
-const { combine, timestamp, printf, colorize } = format;
+const {
+    combine,
+    timestamp,
+    printf,
+    colorize
+} = format;
 
 const customFormat = printf(({ level, message, timestamp, stack }) => {
     return `${timestamp} ${level}: ${stack || message}`;
