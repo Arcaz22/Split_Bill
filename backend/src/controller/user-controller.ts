@@ -5,24 +5,27 @@ import {
 import { StatusCodes } from "http-status-codes";
 import { DataTableResponses } from "../utils/responses/datatable-responses";
 import { findUser } from "../service/user/find-user";
+import { SearchInterface } from "../utils/interface/search-interface";
+import { calculatePagination } from "../utils/interface/pagination-interface";
+import { BaseError } from "../utils/responses/base-error";
 
 export const FindUserController = async (req: Request, res: Response) => {
     try {
-        const searchParams = {
-            search: req.query.search as string,
+        const searchParams: SearchInterface = {
+            search: req.query.search?.toString() || ""
         };
 
-        const paginationParams = {
-            page: req.query.page ? parseInt(req.query.page as string, 10) : undefined,
-            length: req.query.length ? parseInt(req.query.length as string, 10) : undefined,
-        };
+        const page = parseInt(req.query.page as string, 10) || 1;
+        const length = parseInt(req.query.length as string, 10) || 10;
 
-        const { results, total } = await findUser(searchParams, paginationParams);
+        const pagination = calculatePagination(page, length);
 
-        const response = new DataTableResponses(results, total);
+        const { results, total } = await findUser(searchParams, pagination);
 
-        res.status(StatusCodes.OK).json(response);
+        res.status(StatusCodes.OK).json(new DataTableResponses(results, total));
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to fetch users", error });
+        const statusCode = error instanceof BaseError ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR;
+        const message = error instanceof BaseError ? error.message : 'An unexpected error occurred';
+        res.status(statusCode).json({ statusCode, message });
     }
 };

@@ -1,9 +1,18 @@
-import { db } from "../../database/connections";
-import { users } from "../../database/schema";
-import { BaseError } from "../responses/base-error";
-import { StatusCodes } from "http-status-codes";
-import { eq } from "drizzle-orm";
+import {
+    eq,
+    desc
+} from "drizzle-orm";
 import bcrypt from 'bcrypt';
+import { StatusCodes } from "http-status-codes";
+import { db } from "../../database/connections";
+import {
+    users,
+    roles
+} from "../../database/schema";
+import { buildSearchCondition } from "./query-search-user";
+import { BaseError } from "../responses/base-error";
+
+type SearchCondition = ReturnType<typeof buildSearchCondition>;
 
 export const checkUsernameExists = async (username: string) => {
     const existingUser = await db.select().from(users)
@@ -50,3 +59,37 @@ export const verifyUserCredentials = async (email: string, password: string) => 
 
     return user;
 }
+
+export const fetchUsers = async (searchCondition: SearchCondition, limit: number, offset: number) => {
+    return await db.select({
+        id: users.id,
+        name: users.name,
+        username: users.username,
+        email: users.email,
+        phone: users.phone,
+        avatar: users.avatar,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        roleId: users.roleId,
+        roleName: roles.name
+    })
+    .from(users)
+    .leftJoin(roles, eq(users.roleId, roles.id))
+    .where(searchCondition)
+    .orderBy(desc(users.createdAt))
+    .limit(limit)
+    .offset(offset)
+    .execute();
+};
+
+export const fetchTotalUsers = async (searchCondition: SearchCondition): Promise<number> => {
+    const result = await db
+        .select({ count: users.id })
+        .from(users)
+        .where(searchCondition)
+        .execute();
+
+    const totalCount = result.length;
+
+    return totalCount;
+};

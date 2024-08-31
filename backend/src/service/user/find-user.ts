@@ -1,58 +1,25 @@
-import { db } from "../../database/connections";
 import {
-    users,
-    roles
-} from "../../database/schema";
-import {
-    desc,
-    eq,
-    like,
-    or
-} from "drizzle-orm";
-import {
-    PaginationInterface,
-    calculatePagination
+    PaginationResult,
 } from "../../utils/interface/pagination-interface";
+import {
+    fetchTotalUsers,
+    fetchUsers
+} from "../../utils/validations/user-check";
 import { SearchInterface } from "../../utils/interface/search-interface";
+import { buildSearchCondition } from "../../utils/validations/query-search-user";
 
-export const findUser = async (search: SearchInterface, pagination: PaginationInterface) => {
-    const { limit, offset } = calculatePagination(pagination.page, pagination.length);
+export const findUser = async (search: SearchInterface, pagination: PaginationResult) => {
+    const { limit, offset } = pagination;
+    const searchCondition = buildSearchCondition(search.search);
 
-    const searchCondition = search.search
-        ? or(
-            eq(users.id, search.search),
-            like(users.username, `%${search.search}%`),
-            like(users.email, `%${search.search}%`)
-        )
-        : undefined;
-
-    const results = await db.select({
-        id: users.id,
-        username: users.username,
-        email: users.email,
-        phone: users.phone,
-        avatar: users.avatar,
-        createdAt: users.createdAt,
-        updatedAt: users.updatedAt,
-        roleId: users.roleId,
-        roleName: roles.name
-    })
-    .from(users)
-    .leftJoin(roles, eq(users.roleId, roles.id))
-    .where(searchCondition)
-    .orderBy(desc(users.createdAt))
-    .limit(limit)
-    .offset(offset)
-    .execute();
-
-    const total = await db.select({ count: users.id }).from(users)
-        .where(searchCondition)
-        .execute();
-
-    const totalUsers = total.length;
+    const [results, totalUsers] = await Promise.all([
+        fetchUsers(searchCondition, limit, offset),
+        fetchTotalUsers(searchCondition)
+    ]);
 
     const formattedResults = results.map(result => ({
         id: result.id,
+        name: result.name,
         username: result.username,
         email: result.email,
         phone: result.phone,
@@ -65,8 +32,6 @@ export const findUser = async (search: SearchInterface, pagination: PaginationIn
 
     return {
         results: formattedResults,
-        total: totalUsers,
-        page: pagination.page || 1,
-        length: pagination.length || 10,
+        total: Number(totalUsers),
     };
 };

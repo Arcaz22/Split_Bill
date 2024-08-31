@@ -7,6 +7,7 @@ CREATE TABLE `roles` (
 --> statement-breakpoint
 CREATE TABLE `users` (
 	`id` varchar(36) NOT NULL,
+	`nama` varchar(255) NOT NULL,
 	`username` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	`password` varchar(255) NOT NULL,

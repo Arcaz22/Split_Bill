@@ -13,6 +13,10 @@
  *                  schema:
  *                      type: object
  *                      properties:
+ *                          name:
+ *                              description: user username
+ *                              type: string
+ *                              example: nama saya testing
  *                          username:
  *                              description: user username
  *                              type: string

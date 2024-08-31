@@ -8,6 +8,7 @@ import { z } from "zod";
 
 export const users = mysqlTable("users", {
   id: varchar("id", { length: 36 }).primaryKey(),
+  name: varchar("nama", { length: 255 }).notNull(),
   username: varchar("username", { length: 255 }).unique().notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }).notNull(),
@@ -24,6 +25,7 @@ export const roles = mysqlTable("roles", {
 });
 
 export const insertUsersSchema = z.object({
+    name: z.string().min(1),
     username: z.string().min(1),
     email: z.string().email(),
     password: z.string().min(6),
