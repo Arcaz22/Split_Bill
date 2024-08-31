@@ -11,14 +11,22 @@ import { Logout } from '../service/auth/logout';
 
 export const RegisterController = async (req: Request, res: Response) => {
     try {
+        console.log("Received data for registration:", req.body);
+        console.log("Received file for avatar:", req.file);
+
         const avatar = req.file ? req.file.filename : null;
         const { roleName, ...restOfData } = req.body;
         const data = { ...restOfData, roleName, avatar };
 
+        console.log("Processed data to be registered:", data);
+
         const newUser = await Register(data);
+
+        console.log("User registered successfully:", newUser);
 
         res.status(StatusCodes.CREATED).json(new BaseResponses(StatusCodes.CREATED, "User registered successfully", newUser));
     } catch (error) {
+        console.error("Error during registration:", error);
         const statusCode = error instanceof BaseError ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR;
         const message = error instanceof BaseError ? error.message : 'An unexpected error occurred during registration';
         res.status(statusCode).json({ statusCode, message });

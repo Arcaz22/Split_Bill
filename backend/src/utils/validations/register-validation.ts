@@ -12,7 +12,7 @@ export const validateAndHashPassword = async (data: z.infer<typeof insertUsersSc
 
     await checkUsernameExists(validatedData.username);
     await checkEmailExists(validatedData.email);
-    await checkPasswordMatch(validatedData.password, validatedData.confirmPassword);
+    await checkPasswordMatch(validatedData.password, validatedData.confirmPassword || "");
 
     const hashedPassword = await hashPassword(validatedData.password);
 

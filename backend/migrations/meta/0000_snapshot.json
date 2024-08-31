@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "7b4c9116-f0c7-4a80-bb09-e351a5fb988d",
+  "id": "a84f3732-1138-42ae-b9a7-1f446c7ffbc4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "roles": {
@@ -51,8 +51,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "nama": {
-          "name": "nama",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
