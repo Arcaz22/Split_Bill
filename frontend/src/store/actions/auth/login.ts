@@ -1,6 +1,6 @@
 import API from "../api";
 import { API_ROUTES } from "@/lib/endpoint";
-import { LOCAL_STORAGE_KEY } from "../../../lib/constanst";
+import { LOCAL_STORAGE_KEY, AUTH_TOKEN_KEY } from "../../../lib/constanst";
 import {
     actionSuccess,
     actionError,
@@ -25,10 +25,15 @@ export const loginUser = (credentials: { email: string; password: string }) => {
         try {
             const response = await API.post(API_ROUTES.AUTH.LOGIN, credentials);
 
-            const userData = response.data;
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
-            console.log('User data saved in localStorage:', localStorage.getItem(LOCAL_STORAGE_KEY));
+            const userData = response.data.data;
+            const token = userData.token;
 
+            if (token) {
+                localStorage.setItem(AUTH_TOKEN_KEY, token);
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
+            } else {
+                throw new Error("Token is missing in the response");
+            }
 
             dispatch(actionSuccess(LOGIN_USER_SUCCESS, userData));
             toastSuccess('Login berhasil! Selamat datang kembali.');

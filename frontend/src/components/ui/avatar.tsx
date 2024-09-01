@@ -14,7 +14,8 @@ const avatarClasses = cva(
       },
       ring: {
         none: "",
-        blue: "ring-4 ring-blue-500",
+        // blue: "ring-4 ring-blue-500",
+        blue: "ring-4 ring-[#061A40]",
         orange: "ring-4 ring-orange-500",
       },
       rotate: {

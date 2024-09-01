@@ -125,7 +125,10 @@ export default function Register() {
 
                 </form>
             </div>
-            <div className="hidden lg:flex h-full bg-[#061A40] items-center justify-center bg-no-repeat bg-center" style={{ backgroundImage: 'url(/path-to-pattern.png)' }}>
+            <div
+                className="hidden lg:flex h-full items-center justify-center
+                bg-gradient-to-b from-[#0353A4] to-[#006DAA]"
+            >
                 <img
                     src="/vite.svg"
                     alt="logo"

@@ -12,14 +12,13 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const { loading, error } = useSelector((state: RootState) => state.login);
+    const { loading } = useSelector((state: RootState) => state.login);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const userData = await dispatch(loginUser({ email, password }));
             if (userData) {
-                console.log('Navigating to dashboard...');
                 navigate('/');
             }
         } catch (err) {
@@ -29,7 +28,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#F0F0F0] font-sans">
-            <div className="hidden lg:flex h-full bg-[#061A40] items-center justify-center bg-no-repeat bg-center" style={{ backgroundImage: 'url(/path-to-pattern.png)' }}>
+            <div className="hidden lg:flex h-full items-center justify-center bg-gradient-to-b from-[#0353A4] to-[#006DAA]">
                 <img
                     src="/vite.svg"
                     alt="logo"
@@ -91,7 +90,7 @@ export default function Login() {
                             {loading ? 'Loading...' : 'Masuk'}
                         </Button>
                     </div>
-                    {error && <p className="text-red-500 mt-4">{error}</p>}
+                    {/* {error && <p className="text-red-500 mt-4">{error}</p>} */}
                 </form>
             </div>
         </div>
