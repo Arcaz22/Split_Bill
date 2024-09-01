@@ -1,9 +1,7 @@
 import { LOCAL_STORAGE_KEY } from "./constanst";
 
 export const getUser = () => {
-    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if(data) {
-        const user = JSON.parse(data);
-        return user;
-    } else return null;
-}
+    const storedData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || 'null');
+    const user = storedData?.data || null;
+    return user && user.token ? user : null;
+};

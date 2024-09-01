@@ -4,6 +4,7 @@ import Login from './views/authentication/login';
 import { Dashboard } from './views/dashboard';
 import { PrivateRoute } from './components/privateRoute';
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App: React.FC = () => {
   return (

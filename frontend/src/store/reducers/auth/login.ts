@@ -1,9 +1,9 @@
 import {
     AsyncState,
-    REGISTER_USER_ERROR,
-    REGISTER_USER_PENDING,
-    REGISTER_USER_SUCCESS,
-    RegisterUserActions
+    LOGIN_USER_ERROR,
+    LOGIN_USER_PENDING,
+    LOGIN_USER_SUCCESS,
+    LoginUserActions
 } from "@/store/actions/action-types/types";
 
 const initialState: AsyncState = {
@@ -12,25 +12,25 @@ const initialState: AsyncState = {
     error: null,
 };
 
-export const registerReducer = (
+export const loginReducer = (
     state = initialState,
-    action: RegisterUserActions
+    action: LoginUserActions
 ): AsyncState => {
     switch (action.type) {
-      case REGISTER_USER_PENDING:
+      case LOGIN_USER_PENDING:
         return {
           ...state,
           loading: true,
           error: null,
         };
-      case REGISTER_USER_SUCCESS:
+      case LOGIN_USER_SUCCESS:
         return {
           ...state,
           loading: false,
           data: action.data,
           error: null,
         };
-      case REGISTER_USER_ERROR:
+      case LOGIN_USER_ERROR:
         return {
           ...state,
           loading: false,

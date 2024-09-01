@@ -1,11 +1,21 @@
 import API from "../api";
-import { actionSuccess, actionError, actionPending } from "../action-types";
-import { toastSuccess, toastError } from "../../../components/toast";
-import { LOCAL_STORAGE_KEY } from "../../../lib/constanst";
-import { Dispatch } from "redux";
-import { REGISTER_USER_PENDING, REGISTER_USER_SUCCESS, REGISTER_USER_ERROR } from "./types";
-import { AxiosError } from "axios";
 import { API_ROUTES } from "@/lib/endpoint";
+import { AxiosError } from "axios";
+import { Dispatch } from "redux";
+import {
+    actionSuccess,
+    actionError,
+    actionPending
+} from "../action-types/actions";
+import {
+    toastSuccess,
+    toastError
+} from "../../../components/toast";
+import {
+    REGISTER_USER_ERROR,
+    REGISTER_USER_PENDING,
+    REGISTER_USER_SUCCESS
+} from "../action-types/types";
 
 export const registerUser = (userData: {
     name: string;
@@ -14,7 +24,7 @@ export const registerUser = (userData: {
     password: string;
     confirmPassword: string;
     phone: string;
-    avatar: File;
+    avatar: File | null;
     roleName?: string;
 }) => {
     return async (dispatch: Dispatch) => {
@@ -28,18 +38,14 @@ export const registerUser = (userData: {
                 }
             });
 
-            console.log('Sending user data to server:', userData);
-
             const response = await API.post(API_ROUTES.AUTH.REGISTER, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            console.log('Server response:', response);
             dispatch(actionSuccess(REGISTER_USER_SUCCESS, response.data));
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(response.data));
-            toastSuccess('User registered successfully!');
+            toastSuccess('Registrasi berhasil! Silakan login untuk melanjutkan.');
             return response.data;
         } catch (error) {
             let errorMessage = "An unexpected error occurred";

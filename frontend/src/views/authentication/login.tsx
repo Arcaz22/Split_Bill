@@ -1,8 +1,32 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { loginUser } from '@/store/actions/auth/login';
+import { RootState, AppDispatch } from '@/store';
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const { loading, error } = useSelector((state: RootState) => state.login);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const userData = await dispatch(loginUser({ email, password }));
+            if (userData) {
+                console.log('Navigating to dashboard...');
+                navigate('/');
+            }
+        } catch (err) {
+            console.error('Login failed', err);
+        }
+    };
+
     return (
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#F0F0F0] font-sans">
             <div className="hidden lg:flex h-full bg-[#061A40] items-center justify-center bg-no-repeat bg-center" style={{ backgroundImage: 'url(/path-to-pattern.png)' }}>
@@ -25,7 +49,7 @@ export default function Login() {
                     </p>
                 </div>
 
-                <form className="w-full max-w-md mt-8 space-y-6">
+                <form className="w-full max-w-md mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4">
                         <div>
                             <Label htmlFor="email" className="block text-sm font-medium text-[#061A40]">
@@ -36,6 +60,8 @@ export default function Login() {
                                 type="email"
                                 size="medium"
                                 variant="default"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
@@ -48,6 +74,8 @@ export default function Login() {
                                 type="password"
                                 size="medium"
                                 variant="default"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                     </div>
@@ -58,10 +86,12 @@ export default function Login() {
                             size="lg"
                             color="secondary"
                             scale={false}
+                            disabled={loading}
                         >
-                            Masuk
+                            {loading ? 'Loading...' : 'Masuk'}
                         </Button>
                     </div>
+                    {error && <p className="text-red-500 mt-4">{error}</p>}
                 </form>
             </div>
         </div>
