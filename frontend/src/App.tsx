@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { Friend } from './views/friend';
 import { NotFound } from './lib/components/not-found';
+import { Settings } from './views/dashboard/settings';
 
 export const App: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
             <Route path="/" element={<Layout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="friends" element={<Friend />} />
+                <Route path="profile" element={<Settings />} />
             </Route>
         </Route>
       </Routes>

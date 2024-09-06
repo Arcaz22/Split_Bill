@@ -4,7 +4,7 @@ import {
     LOGOUT_USER_PENDING,
     LOGOUT_USER_SUCCESS,
     LogoutUserActions
-} from "@/store/actions/action-types/types";
+} from "@/store/actions/action-types/auth-types";
 
 const initialState: AsyncState = {
     loading: false,

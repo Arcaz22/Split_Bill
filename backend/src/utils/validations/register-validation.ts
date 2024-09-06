@@ -1,9 +1,8 @@
 import { z } from 'zod';
-import { hashPassword } from '../hash';
+import { checkPasswordMatch, hashPassword } from '../hash';
 import { insertUsersSchema } from '../../database/schema';
 import {
     checkEmailExists,
-    checkPasswordMatch,
     checkUsernameExists
 } from './user-check';
 

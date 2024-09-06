@@ -11,7 +11,7 @@ import {
     RootState,
     AppDispatch
 } from '@/store';
-import AvatarUpload from '@/lib/components/avatar-upload';
+// import AvatarUpload from '@/lib/components/avatar-upload';
 import FormField from '@/lib/components/form-field';
 
 export default function Register() {
@@ -28,7 +28,7 @@ export default function Register() {
         confirmPassword: '',
     });
 
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarFile] = useState<File | null>(null);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
@@ -64,7 +64,7 @@ export default function Register() {
                 </div>
 
                 <form className="w-full max-w-md mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <AvatarUpload onAvatarChange={setAvatarFile} />
+                    {/* <AvatarUpload onAvatarChange={setAvatarFile} /> */}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <FormField

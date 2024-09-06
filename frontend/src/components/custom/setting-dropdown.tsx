@@ -6,11 +6,12 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMedia } from "react-use";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/actions/auth/logout";
 import { RootState, AppDispatch } from "@/store";
+import { getToken } from "@/lib";
 
 export const SettingsDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,14 @@ export const SettingsDropdown = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate();
     const { loading } = useSelector((state: RootState) => state.logout);
+
+    useEffect(() => {
+        const token = getToken();
+        if (!token) {
+            dispatch(logoutUser());
+            navigate("/login");
+        }
+    }, [dispatch, navigate]);
 
     const handleMouseEnter = () => {
         if (!isMobile) {

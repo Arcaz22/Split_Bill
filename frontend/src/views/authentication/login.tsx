@@ -2,20 +2,21 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { loginUser } from '@/store/actions/auth/login';
 import { RootState, AppDispatch } from '@/store';
+import FormField from '@/lib/components/form-field';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { loading } = useSelector((state: RootState) => state.login);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
         try {
             const userData = await dispatch(loginUser({ email, password }));
             if (userData) {
@@ -23,6 +24,7 @@ export default function Login() {
             }
         } catch (err) {
             console.error('Login failed', err);
+            setError('Login gagal. Pastikan email dan password benar.');
         }
     };
 
@@ -51,33 +53,31 @@ export default function Login() {
                 <form className="w-full max-w-md mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4">
                         <div>
-                            <Label htmlFor="email" className="block text-sm font-medium text-[#061A40]">
-                                Alamat Email
-                            </Label>
-                            <Input
+                            <FormField
                                 id="email"
+                                label="Alamat Email"
                                 type="email"
-                                size="medium"
-                                variant="default"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
                         <div>
-                            <Label htmlFor="password" className="block text-sm font-medium text-[#061A40]">
-                                Password
-                            </Label>
-                            <Input
+                            <FormField
                                 id="password"
+                                label="Password"
                                 type="password"
-                                size="medium"
-                                variant="default"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                     </div>
+
+                    {error && (
+                        <div className="text-red-500 text-center">
+                            {error}
+                        </div>
+                    )}
 
                     <div>
                         <Button
@@ -90,7 +90,6 @@ export default function Login() {
                             {loading ? 'Loading...' : 'Masuk'}
                         </Button>
                     </div>
-                    {/* {error && <p className="text-red-500 mt-4">{error}</p>} */}
                 </form>
             </div>
         </div>

@@ -1,6 +1,8 @@
 import {
     eq,
-    desc
+    desc,
+    and,
+    ne
 } from "drizzle-orm";
 import bcrypt from 'bcrypt';
 import { StatusCodes } from "http-status-codes";
@@ -14,9 +16,15 @@ import { BaseError } from "../responses/base-error";
 
 type SearchCondition = ReturnType<typeof buildSearchCondition>;
 
-export const checkUsernameExists = async (username: string) => {
+export const checkUsernameExists = async (username: string, idToExclude?: string) => {
+    const conditions = [eq(users.username, username)];
+
+    if (idToExclude) {
+        conditions.push(ne(users.id, idToExclude));
+    }
+
     const existingUser = await db.select().from(users)
-        .where(eq(users.username, username))
+        .where(and(...conditions))
         .limit(1)
         .execute();
 
@@ -25,15 +33,15 @@ export const checkUsernameExists = async (username: string) => {
     }
 };
 
-export const checkPasswordMatch = (password: string, confirmPassword: string) => {
-    if (password !== confirmPassword) {
-        throw new BaseError(StatusCodes.BAD_REQUEST, "Password and confirm password must match");
-    }
-};
+export const checkEmailExists = async (email: string, idToExclude?: string) => {
+    const conditions = [eq(users.email, email)];
 
-export const checkEmailExists = async (email: string) => {
+    if (idToExclude) {
+        conditions.push(ne(users.id, idToExclude));
+    }
+
     const existingUser = await db.select().from(users)
-        .where(eq(users.email, email))
+        .where(and(...conditions))
         .limit(1)
         .execute();
 
@@ -92,4 +100,14 @@ export const fetchTotalUsers = async (searchCondition: SearchCondition): Promise
     const totalCount = result.length;
 
     return totalCount;
+};
+
+export const ensureUserExists = async (id: string) => {
+    const [existingUser] = await db.select().from(users).where(eq(users.id, id)).execute();
+
+    if (!existingUser) {
+        throw new BaseError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    return existingUser;
 };

@@ -15,7 +15,7 @@ import {
     REGISTER_USER_ERROR,
     REGISTER_USER_PENDING,
     REGISTER_USER_SUCCESS
-} from "../action-types/types";
+} from "../action-types/auth-types";
 
 export const registerUser = (userData: {
     name: string;

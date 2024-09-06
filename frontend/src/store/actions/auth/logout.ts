@@ -1,6 +1,5 @@
 import API from "../api";
 import { API_ROUTES } from "@/lib/endpoint";
-import { LOCAL_STORAGE_KEY, AUTH_TOKEN_KEY } from "../../../lib/constanst";
 import {
     actionSuccess,
     actionError,
@@ -14,9 +13,11 @@ import {
     LOGOUT_USER_ERROR,
     LOGOUT_USER_PENDING,
     LOGOUT_USER_SUCCESS
-} from "../action-types/types";
+} from "../action-types/auth-types";
 import { Dispatch } from "redux";
 import { AxiosError } from "axios";
+import axios from "axios";
+import { AUTH_TOKEN_KEY } from "@/lib/constanst";
 
 export const logoutUser = () => {
     return async (dispatch: Dispatch) => {
@@ -26,7 +27,7 @@ export const logoutUser = () => {
             const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
             if (!token) {
-                throw new Error("Authorization token is missing");
+                throw new Error("Token is Expired");
             }
 
             await API.post(API_ROUTES.AUTH.LOGOUT, null, {
@@ -35,7 +36,9 @@ export const logoutUser = () => {
                 },
             });
 
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            localStorage.removeItem(AUTH_TOKEN_KEY);
+
+            delete axios.defaults.headers.common["Authorization"];
 
             dispatch(actionSuccess(LOGOUT_USER_SUCCESS, null));
             toastSuccess('Logout berhasil! Sampai jumpa lagi.');

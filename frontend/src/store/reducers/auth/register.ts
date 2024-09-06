@@ -4,7 +4,7 @@ import {
     REGISTER_USER_PENDING,
     REGISTER_USER_SUCCESS,
     RegisterUserActions
-} from "@/store/actions/action-types/types";
+} from "@/store/actions/action-types/auth-types";
 
 const initialState: AsyncState = {
     loading: false,

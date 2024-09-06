@@ -6,4 +6,10 @@ export const API_ROUTES = {
         LOGIN: `${BASE_URL}/auth/login`,
         LOGOUT: `${BASE_URL}/auth/logout`,
     },
+    USER: {
+        PROFILE: `${BASE_URL}/user/`,
+        UPLOAD_AVATAR: "/user/avatar/upload",
+        UPDATE_PROFILE: `${BASE_URL}/user/profile`,
+        CHANGE_PASSWORD: `${BASE_URL}/user/change-password`
+    },
 };

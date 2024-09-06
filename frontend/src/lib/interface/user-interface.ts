@@ -4,5 +4,10 @@ export interface UserData {
     username: string;
     email: string;
     phone: string;
-    avatarUrl?: string;
+    avatar?: string;
+}
+export interface ChangePasswordData {
+    oldPassword: string;
+    newPassword: string;
+    confirmNewPassword: string;
 }

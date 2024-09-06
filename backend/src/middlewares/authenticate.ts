@@ -10,8 +10,13 @@ import {
 export const Authenticate = (req: AuthenticatedInterface, res: Response, next: NextFunction) => {
     try {
         const token = getAuthToken(req);
+
         const userPayload = verifyToken(token);
+        if (!userPayload || !userPayload.id) {
+            throw new BaseError(StatusCodes.UNAUTHORIZED, 'User not authenticated');
+        }
         req.user = userPayload;
+
         next();
     } catch (error) {
         const statusCode = error instanceof BaseError ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR;

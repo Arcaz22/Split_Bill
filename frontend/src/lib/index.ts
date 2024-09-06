@@ -1,6 +1,40 @@
-import { LOCAL_STORAGE_KEY } from "./constanst";
+import { jwtDecode } from "jwt-decode";
+import { AUTH_TOKEN_KEY } from "./constanst";
+interface JwtPayload {
+  exp: number;
+}
+
+export const getToken = () => {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+
+    if (token) {
+        try {
+            const decoded = jwtDecode<JwtPayload>(token);
+
+            const currentTime = Date.now() / 1000;
+            if (decoded.exp < currentTime) {
+                localStorage.removeItem(AUTH_TOKEN_KEY);
+                return null;
+            }
+
+            return token;
+        } catch {
+            localStorage.removeItem(AUTH_TOKEN_KEY);
+            return null;
+        }
+    }
+
+    return null;
+};
 
 export const getUser = () => {
-    const storedData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || 'null');
-    return storedData && storedData.token ? storedData : null;
+    const token = getToken();
+    if (!token) return null;
+
+    try {
+        const userData = JSON.parse(atob(token.split('.')[1]));
+        return userData;
+    } catch {
+        return null;
+    }
 };
